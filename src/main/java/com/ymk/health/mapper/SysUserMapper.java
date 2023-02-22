@@ -20,7 +20,7 @@ public interface SysUserMapper {
 
     List<SysMenu> findMenus(@Param("userId") Long userId);
 
-    List<SysMenu> findChildMenus(@Param("userID") Long userId, @Param("parentId") Long parentId);
+    List<SysMenu> findChildMenus(@Param("userId") Long userId, @Param("parentId") Long parentId);
 
     List<Permission> findPermissions(@Param("userId") Long userId);
 }

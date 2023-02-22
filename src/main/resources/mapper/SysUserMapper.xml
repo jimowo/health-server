@@ -26,8 +26,6 @@
     <id column="id" property="id"/>
     <result column="label" property="label"/>
     <result column="code" property="code"/>
-    <collection property="menus" ofType="SysMenu" select="findMenus" column="id"/>
-    <collection property="permissions" ofType="Permission" select="findPermissions" column="id"/>
   </resultMap>
 
   <resultMap id="menuMap" type="SysMenu">
@@ -37,7 +35,6 @@
     <result column="title" property="title"/>
     <result column="component" property="component"/>
     <result column="parent_id" property="parentId"/>
-    <collection property="childrenMenu" ofType="SysMenu" select="findChildMenus" column="id"/>
   </resultMap>
 
   <resultMap id="permissionMap" type="Permission">
@@ -72,12 +69,12 @@
   <select id="findMenus" parameterType="int" resultMap="menuMap">
     select *
     from sys_menu
-    <if test="userId != null and userId > 0">
-      where id in (
+    where parent_id is null
+    <if test="userId != null">
+      and id in (
       select menu_id
       from roles_menus
-      where role_id in (select id from user_roles where user_id = #{userId}))
-      and parent_id is null;
+      where role_id in (select id from user_roles where user_id = #{userId}));
     </if>
   </select>
   <!--根据角色id 查询权限信息-->
@@ -92,16 +89,16 @@
     </if>
   </select>
   <!--根据菜单id 查询子菜单-->
-  <select id="findChildMenus" parameterType="int" resultMap="menuMap">
+  <select id="findChildMenus" parameterType="Map" resultMap="menuMap">
     SELECT *
     FROM sys_menu
     WHERE parent_id = #{parentId}
-      <if test="userId != null">
-        AND id IN (
-        SELECT menu_id
-        FROM roles_menus
-        WHERE role_id IN (SELECT role_id FROM user_roles WHERE user_id = #{userID}));
-      </if>
+    <if test="userId != null">
+      AND id IN (
+      SELECT menu_id
+      FROM roles_menus
+      WHERE role_id IN (SELECT role_id FROM user_roles WHERE user_id = #{userId}));
+    </if>
   </select>
 
 </mapper>

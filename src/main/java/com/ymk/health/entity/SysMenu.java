@@ -22,5 +22,5 @@ public class SysMenu {
     /**
      * 子菜单
      */
-    private List<SysMenu> childrenMenu;
+    private List<SysMenu> children;
 }
