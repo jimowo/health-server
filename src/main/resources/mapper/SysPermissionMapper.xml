@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ymk.health.mapper.SysPermissionMapper">
+
+  <insert id="insert" parameterType="Permission">
+    insert into sys_permission(label, `code`)
+    values (#{label}, #{code});
+  </insert>
+
+  <update id="update" parameterType="Permission">
+    update sys_permission
+    <set>
+      <if test="label != null">
+        label = #{label}
+      </if>
+      <if test="code != null">
+        `code` = #{code}
+      </if>
+    </set>
+    where id = #{id};
+  </update>
+
+  <delete id="delete" parameterType="Long">
+    delete
+    from sys_permission
+    where id = #{id};
+  </delete>
+
+
+  <select id="findPage" resultType="Permission">
+    select * from sys_permission
+    <if test="queryString != null and queryString.length > 0">
+      where label like concat('%', #{queryString}, '%')
+      or code like concat('%', #{queryString}, '%')
+    </if>
+  </select>
+</mapper>

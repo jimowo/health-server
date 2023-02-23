@@ -1,5 +1,6 @@
 package com.ymk.health.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,6 +36,7 @@ public class SysUser implements UserDetails {
      * @return
      */
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> list = new ArrayList<>();
         if (roles != null && roles.size() > 0) {
@@ -55,6 +57,7 @@ public class SysUser implements UserDetails {
      * @return
      */
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return false;
     }
@@ -64,6 +67,7 @@ public class SysUser implements UserDetails {
      * @return
      */
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return false;
     }
@@ -73,6 +77,7 @@ public class SysUser implements UserDetails {
      * @return
      */
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return false;
     }
@@ -82,6 +87,7 @@ public class SysUser implements UserDetails {
      * @return
      */
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return status;
     }

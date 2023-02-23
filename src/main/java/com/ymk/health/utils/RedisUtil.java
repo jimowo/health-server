@@ -36,7 +36,7 @@ public class RedisUtil {
             }
             return true;
         } catch (Exception e) {
-            log.error("设置缓存的失效时间异常-->", e.getMessage());
+            log.error("设置缓存的失效时间异常-->{}", e.getMessage());
             return false;
         }
     }
@@ -44,10 +44,10 @@ public class RedisUtil {
     /**
      * 根据key拿到key的失效时间
      *
-     * @param key
+     * @param key 键值
      * @return 失效时间  秒  就是距离过期时间有多少秒
      */
-    public long getExpire(String key) {
+    public Long getExpire(String key) {
         return redisTemplate.getExpire(key, TimeUnit.SECONDS);
     }
 
@@ -57,7 +57,7 @@ public class RedisUtil {
      * @param key 是
      * @return true存在，否则false
      */
-    public boolean hasKey(String key) {
+    public Boolean hasKey(String key) {
         return redisTemplate.hasKey(key);
     }
 
@@ -70,9 +70,11 @@ public class RedisUtil {
         if (keys != null && keys.length > 0) {
             if (keys.length == 1) {
                 redisTemplate.delete(keys[0]);
+            } else {
+                redisTemplate.delete((Collection<String>) CollectionUtils.arrayToList(keys));
             }
         } else {
-            redisTemplate.delete((Collection<String>) CollectionUtils.arrayToList(keys));
+            log.error("请输入要删除的键");
         }
     }
 
@@ -101,28 +103,29 @@ public class RedisUtil {
             redisTemplate.opsForValue().set(key, value);
             return true;
         } catch (Exception e) {
-            log.error("向Redis中存入值时异常-->", e.getMessage());
+            log.error("向Redis中存入值时异常-->{}", e.getMessage());
             return false;
         }
     }
 
     /**
      * 在redis服务器中设置String类型的值，并设置失效时间
-     * @param key String 类型的key
+     *
+     * @param key   String 类型的key
      * @param value 值
-     * @param time 失效时间 秒
+     * @param time  失效时间 秒
      * @return 设置成功返回true  否则false
      */
-    public boolean set(String key, Object value, Long time) {
+    public boolean set(String key, Object value, long time) {
         try {
             if (time > 0) {
                 redisTemplate.opsForValue().set(key, value, time, TimeUnit.SECONDS);
             } else {
-                set(key,value);
+                set(key, value);
             }
             return true;
         } catch (Exception e) {
-            log.error("向Redis中存入值时异常-->", e.getMessage());
+            log.error("向Redis中存入值时异常-->{}", e.getMessage());
             return false;
         }
     }
@@ -130,84 +133,72 @@ public class RedisUtil {
 
     /**
      * list集合
-     * @param key
-     * @param values
-     * @return
      */
-    public boolean listRightPush(String key, Object... values){
+    public boolean listRightPush(String key, Object... values) {
         Long pushAll = redisTemplate.opsForList().rightPushAll(key, values);
-        if (pushAll > 0 ){
-            return true;
-        }
-
-        return false;
+        return pushAll > 0;
     }
 
     /**
      * redis集合的获取
-     * @param key
-     * @return
      */
-    public List<?> rangeList(String key){
-        List<Object> list = redisTemplate.opsForList().range(key, 0, -1);
-        return list;
+    public List<?> rangeList(String key) {
+        return redisTemplate.opsForList().range(key, 0, -1);
     }
-
-
-
 
 
     /**
      * hash类型数据的存储
+     *
      * @param key hash 类型值的key
      * @param map 键值对
-     * @return
      */
-    public boolean hmset(String key, Map<String,Object> map){
+    public boolean hmset(String key, Map<String, Object> map) {
         try {
-            redisTemplate.opsForHash().putAll(key,map);
+            redisTemplate.opsForHash().putAll(key, map);
             return true;
         } catch (Exception e) {
-            log.error("向Redis中存入值时异常-->", e.getMessage());
+            log.error("向Redis中存入值时异常-->{}", e.getMessage());
             return false;
         }
     }
 
     /**
      * hash 类型数据存储
-     * @param key hash类型的Key
-     * @param map 键值对
+     *
+     * @param key  hash类型的Key
+     * @param map  键值对
      * @param time 失效时间
      * @return true设置成功，否则false
      */
-    public boolean hmset(String key,Map<String,Object> map, long time){
+    public boolean hmset(String key, Map<String, Object> map, Long time) {
         try {
-            redisTemplate.opsForHash().putAll(key,map);
-            if (time > 0){
-                setExpire(key,time);
+            redisTemplate.opsForHash().putAll(key, map);
+            if (time > 0) {
+                setExpire(key, time);
             }
             return true;
         } catch (Exception e) {
-            log.error("向Redis中存入值时异常-->", e.getMessage());
+            log.error("向Redis中存入值时异常-->{}", e.getMessage());
             return false;
         }
     }
 
 
-
     /**
      * 设置hash中指定key下的field的值为value
-     * @param key  hash 的key建
+     *
+     * @param key   hash 的key建
      * @param field hash中的field域
      * @param value 给hash中的field设置的值
      * @return true设置成功，否则false
      */
-    public boolean hset(String key,String field, Object value){
+    public boolean hset(String key, String field, Object value) {
         try {
-            redisTemplate.opsForHash().put(key,field,value);
+            redisTemplate.opsForHash().put(key, field, value);
             return true;
         } catch (Exception e) {
-            log.error("向Redis中存入值时异常-->", e.getMessage());
+            log.error("向Redis中存入值时异常-->{}", e.getMessage());
             return false;
         }
     }
@@ -215,21 +206,22 @@ public class RedisUtil {
 
     /**
      * 设置hash中指定key下field的值为value并设置失效时间
-     * @param key hash的key
+     *
+     * @param key   hash的key
      * @param field hash的fieid
      * @param value 给hash中的key下的fieid 设置的值
-     * @param time 失效时间
+     * @param time  失效时间
      * @return true设置成功 否则false
      */
-    public boolean hset(String key,String field,Object value, long time){
+    public boolean hset(String key, String field, Object value, Long time) {
         try {
-            redisTemplate.opsForHash().put(key,field,value);
-            if (time > 0){
-                setExpire(key,time);
+            redisTemplate.opsForHash().put(key, field, value);
+            if (time > 0) {
+                setExpire(key, time);
             }
             return true;
         } catch (Exception e) {
-            log.error("向Redis中存入值时异常-->", e.getMessage());
+            log.error("向Redis中存入值时异常-->{}", e.getMessage());
             return false;
         }
     }
@@ -237,21 +229,23 @@ public class RedisUtil {
 
     /**
      * 获取hash类型数据的key对应的整个map对象
-     * @param key hash 中的Key
+     *
+     * @param key   hash 中的Key
      * @param field key对应的hash对象
      * @return 该hash key 对应的hash对应
      */
-    public Object hget(String key,String field){
-        return redisTemplate.opsForHash().get(key,field);
+    public Object hget(String key, String field) {
+        return redisTemplate.opsForHash().get(key, field);
     }
 
 
     /**
      * 获取hash类型数据的key对应的整个map对象
+     *
      * @param key hash 中的key
      * @return 该hash key对应的hash对象
      */
-    public Map<Object,Object> hmget(String key){
+    public Map<Object, Object> hmget(String key) {
         return redisTemplate.opsForHash().entries(key);
     }
 

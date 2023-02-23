@@ -1,8 +1,11 @@
 package com.ymk.health.utils;
 
+import lombok.Data;
+
 /**
  * 分页的每页的信息
  */
+@Data
 public class QueryInfo {
 
     /**
