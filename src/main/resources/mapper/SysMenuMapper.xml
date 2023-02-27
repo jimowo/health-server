@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ymk.health.mapper.SysMenuMapper">
+
+  <insert id="insert" parameterType="SysMenu">
+    insert into sys_menu(path, icon, title, component, parent_id)
+    values (#{path}, #{icon}, #{title}, #{component}, #parentId);
+  </insert>
+
+  <update id="update" parameterType="SysMenu">
+    update sys_menu
+    <set>
+      <if test="path != null">
+        `path` = #{path},
+      </if>
+      <if test="icon != null">
+        `icon` = #{icon},
+      </if>
+      <if test="title != null">
+        `title` = #{title},
+      </if>
+      <if test="component != null">
+        `component` = #{component},
+      </if>
+      <if test="parent_id != null">
+        `parent_id` = #{parentId},
+      </if>
+    </set>
+    where `id` = #{id};
+  </update>
+
+  <delete id="delete" parameterType="long">
+    delete
+    from sys_menu
+    where id = #{id};
+  </delete>
+
+  <select id="findPage" resultType="SysMenu">
+    select * from sys_menu
+    <if test="queryString != null and queryString.length > 0">
+      where path like concat('%', #{queryString}, '%')
+      or icon like concat('%', #{queryString}, '%')
+      or title like concat('%', #{queryString}, '%')
+    </if>
+  </select>
+</mapper>
