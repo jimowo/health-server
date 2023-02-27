@@ -12,13 +12,13 @@
     update sys_permission
     <set>
       <if test="label != null">
-        label = #{label}
+        `label` = #{label},
       </if>
       <if test="code != null">
         `code` = #{code}
       </if>
     </set>
-    where id = #{id};
+    where `id` = #{id};
   </update>
 
   <delete id="delete" parameterType="Long">

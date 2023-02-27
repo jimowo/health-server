@@ -35,7 +35,7 @@ public class SysPermissionController {
         return permissionService.delete(id);
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     @ApiOperation("修改权限")
     public Result update(@RequestBody Permission permission) {
         return permissionService.update(permission);
