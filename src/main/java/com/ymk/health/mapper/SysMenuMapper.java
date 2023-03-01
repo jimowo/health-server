@@ -14,7 +14,7 @@ public interface SysMenuMapper {
     void insert(SysMenu menu);
 
     /**
-     * 修改权限信息
+     * 修改菜单信息
      * @param menu
      */
     void update(SysMenu menu);
@@ -26,7 +26,7 @@ public interface SysMenuMapper {
     void delete(Long id);
 
     /**
-     * 分页查询权限信息
+     * 分页查询菜单信息
      * @param queryString
      * @return
      */

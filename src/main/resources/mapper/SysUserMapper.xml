@@ -69,7 +69,7 @@
   <select id="findMenus" parameterType="int" resultMap="menuMap">
     select *
     from sys_menu
-    where parent_id is null
+    where parent_id is null or parent_id = 0
     <if test="userId != null">
       and id in (
       select menu_id

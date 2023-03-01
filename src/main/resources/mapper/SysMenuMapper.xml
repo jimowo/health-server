@@ -5,7 +5,7 @@
 
   <insert id="insert" parameterType="SysMenu">
     insert into sys_menu(path, icon, title, component, parent_id)
-    values (#{path}, #{icon}, #{title}, #{component}, #parentId);
+    values (#{path}, #{icon}, #{title}, #{component}, #{parentId});
   </insert>
 
   <update id="update" parameterType="SysMenu">
@@ -23,8 +23,8 @@
       <if test="component != null">
         `component` = #{component},
       </if>
-      <if test="parent_id != null">
-        `parent_id` = #{parentId},
+      <if test="parentId != null">
+        `parent_id` = #{parentId}
       </if>
     </set>
     where `id` = #{id};

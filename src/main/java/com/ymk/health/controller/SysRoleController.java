@@ -1,43 +1,43 @@
 package com.ymk.health.controller;
 
-import com.ymk.health.entity.SysMenu;
-import com.ymk.health.service.SysMenuService;
+import com.ymk.health.service.SysRoleService;
 import com.ymk.health.utils.QueryInfo;
 import com.ymk.health.utils.Result;
+import com.ymk.health.vo.RoleMenusPermissionsVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/menu")
-@Api(value = "菜单数据接口")
-public class SysMenuController {
-    
+@RequestMapping("/role")
+@Api(value = "角色数据接口")
+public class SysRoleController {
+
     @Autowired
-    private SysMenuService menuService;
+    private SysRoleService roleService;
 
     @PostMapping("/findPage")
     @ApiOperation("分页查询")
     public Result findPage(@RequestBody QueryInfo queryInfo) {
-        return menuService.findPage(queryInfo);
+        return roleService.findPage(queryInfo);
     }
 
     @PostMapping("/insert")
-    @ApiOperation("添加菜单")
-    public Result insert(@RequestBody SysMenu menu) {
-        return menuService.insert(menu);
+    @ApiOperation("添加角色")
+    public Result insert(@RequestBody RoleMenusPermissionsVo role) {
+        return roleService.insert(role);
     }
 
     @DeleteMapping("/delete/{id}")
-    @ApiOperation("删除菜单")
+    @ApiOperation("删除角色")
     public Result delete(@PathVariable("id") long id) {
-        return menuService.delete(id);
+        return roleService.delete(id);
     }
 
     @PutMapping("/update")
-    @ApiOperation("修改菜单")
-    public Result update(@RequestBody SysMenu menu) {
-        return menuService.update(menu);
+    @ApiOperation("修改角色")
+    public Result update(@RequestBody RoleMenusPermissionsVo role) {
+        return roleService.update(role);
     }
 }

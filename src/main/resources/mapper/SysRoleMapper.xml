@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ymk.health.mapper.SysRoleMapper">
+
+  <resultMap id="roleMap" type="SysRole">
+    <id column="id" property="id"/>
+    <result column="label" property="label"/>
+    <result column="code" property="code"/>
+    <collection property="menus" ofType="SysMenu" select="findMenus" column="id"/>
+    <collection property="permissions" ofType="Permission" select="findPermissions" column="id"/>
+  </resultMap>
+
+  <resultMap id="menuMap" type="SysMenu">
+    <id column="id" property="id"/>
+    <result column="path" property="path"/>
+    <result column="icon" property="icon"/>
+    <result column="title" property="title"/>
+    <result column="component" property="component"/>
+    <result column="parent_id" property="parentId"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="SysRole">
+    insert into sys_role(label, code)
+    values (#{label}, #{code});
+  </insert>
+
+  <insert id="bindRoleMenus">
+    insert into roles_menus
+    values (#{roleId}, #{menuId});
+  </insert>
+
+  <insert id="bindRolePermissions">
+    insert into roles_permissions
+    values (#{roleId}, #{permissionId});
+  </insert>
+
+  <insert id="insertByParam" parameterType="com.ymk.health.vo.RoleMenusPermissionsVo">
+    insert into sys_role(label, code)
+    values (#{label}, #{code});
+  </insert>
+
+  <update id="update" parameterType="SysRole">
+    update sys_role
+    <set>
+      <if test="label != null">
+        `label` = #{label},
+      </if>
+      <if test="code != null">
+        `code` = #{code},
+      </if>
+    </set>
+    where `id` = #{id};
+  </update>
+
+  <update id="updateByParam" parameterType="com.ymk.health.vo.RoleMenusPermissionsVo">
+    update sys_role
+    <set>
+      <if test="label != null">
+        `label` = #{label},
+      </if>
+      <if test="code != null">
+        `code` = #{code},
+      </if>
+    </set>
+    where `id` = #{id};
+  </update>
+
+  <delete id="delete" parameterType="long">
+    delete
+    from sys_role
+    where id = #{id};
+  </delete>
+
+  <delete id="deleteRoleMenus" parameterType="long">
+    delete
+    from roles_menus
+    where role_id = #{roleId};
+  </delete>
+
+  <delete id="deleteRolePermissions" parameterType="long">
+    delete
+    from roles_permissions
+    where role_id = #{roleId};
+  </delete>
+
+  <select id="findPage" resultMap="roleMap">
+    select * from sys_role
+    <if test="queryString != null and queryString.length > 0">
+      where label like concat('%', #{queryString}, '%')
+      or code like concat('%', #{queryString}, '%')
+    </if>
+  </select>
+
+  <!--根据角色id 查询菜单信息(父级菜单)-->
+  <select id="findMenus" parameterType="int" resultMap="menuMap">
+    select *
+    from sys_menu
+    where parent_id is null or parent_id = 0
+    <if test="id != null">
+      and id in (
+      select menu_id
+      from roles_menus
+      where role_id = #{id});
+    </if>
+  </select>
+  <!--根据角色id 查询权限信息-->
+  <select id="findPermissions" parameterType="int" resultType="Permission">
+    SELECT *
+    FROM sys_permission
+    <if test="id != null">
+      WHERE id IN (
+      SELECT permission_id
+      FROM roles_permissions
+      WHERE role_id = #{id});
+    </if>
+  </select>
+  <!--根据菜单id 查询子菜单-->
+  <select id="findChildMenus" parameterType="Map" resultMap="menuMap">
+    SELECT *
+    FROM sys_menu
+    WHERE parent_id = #{parentId}
+    <if test="roleId != null">
+      AND id IN (
+      SELECT menu_id
+      FROM roles_menus
+      WHERE role_id = #{roleId});
+    </if>
+  </select>
+
+  <select id="findRoleId" resultType="Integer">
+    select id
+    from sys_role
+    where `code` = #{code};
+  </select>
+
+</mapper>

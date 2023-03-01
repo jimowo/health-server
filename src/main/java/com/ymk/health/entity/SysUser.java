@@ -1,6 +1,7 @@
 package com.ymk.health.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ymk.health.utils.StringUtil;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -41,12 +42,16 @@ public class SysUser implements UserDetails {
         List<GrantedAuthority> list = new ArrayList<>();
         if (roles != null && roles.size() > 0) {
             roles.forEach(item -> {
-                list.add(new SimpleGrantedAuthority(("ROLE_" + item.getCode())));
+                if (StringUtil.isNotEmpty(item.getCode())) {
+                    list.add(new SimpleGrantedAuthority(("ROLE_" + item.getCode())));
+                }
             });
         }
         if (permissions != null && permissions.size() >0) {
             permissions.forEach(item -> {
-                list.add(new SimpleGrantedAuthority(item.getCode()));
+                if (StringUtil.isNotEmpty(item.getCode())) {
+                    list.add(new SimpleGrantedAuthority(("ROLE_" + item.getCode())));
+                }
             });
         }
         return list;

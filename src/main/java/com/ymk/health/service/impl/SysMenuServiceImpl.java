@@ -5,9 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.ymk.health.entity.SysMenu;
 import com.ymk.health.mapper.SysMenuMapper;
 import com.ymk.health.service.SysMenuService;
-import com.ymk.health.utils.PageResult;
-import com.ymk.health.utils.QueryInfo;
-import com.ymk.health.utils.Result;
+import com.ymk.health.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +19,8 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Autowired
     private SysMenuMapper menuMapper;
 
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Override
     public Result findPage(QueryInfo queryInfo) {
@@ -38,18 +38,21 @@ public class SysMenuServiceImpl implements SysMenuService {
     @Override
     public Result insert(SysMenu menu) {
         menuMapper.insert(menu);
+        redisUtil.delete("userInfo_" + SecurityUtil.getUsername());
         return Result.success("添加菜单成功");
     }
 
     @Override
     public Result delete(long id) {
         menuMapper.delete(id);
+        redisUtil.delete("userInfo_" + SecurityUtil.getUsername());
         return Result.success("删除菜单成功");
     }
 
     @Override
     public Result update(SysMenu menu) {
         menuMapper.update(menu);
+        redisUtil.delete("userInfo_" + SecurityUtil.getUsername());
         return Result.success("修改菜单成功");
     }
 }
