@@ -1,9 +1,12 @@
 package com.ymk.health.controller;
 
 import com.ymk.health.service.SysUserService;
+import com.ymk.health.utils.QueryInfo;
 import com.ymk.health.utils.Result;
 import com.ymk.health.utils.SecurityUtil;
 import com.ymk.health.vo.LoginVo;
+import com.ymk.health.vo.RoleMenusPermissionsVo;
+import com.ymk.health.vo.UserRolesVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import netscape.security.Principal;
@@ -53,5 +56,29 @@ public class LoginController {
             return Result.success("退出登录成功");
         }
         return Result.fail("请先登录");
+    }
+
+    @PostMapping("/findPage")
+    @ApiOperation("分页查询")
+    public Result findPage(@RequestBody QueryInfo queryInfo) {
+        return sysUserService.findPage(queryInfo);
+    }
+
+    @PostMapping("/insert")
+    @ApiOperation("添加用户")
+    public Result insert(@RequestBody UserRolesVo user) {
+        return sysUserService.insert(user);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    @ApiOperation("删除用户")
+    public Result delete(@PathVariable("id") long id) {
+        return sysUserService.delete(id);
+    }
+
+    @PutMapping("/update")
+    @ApiOperation("修改用户")
+    public Result update(@RequestBody UserRolesVo user) {
+        return sysUserService.update(user);
     }
 }

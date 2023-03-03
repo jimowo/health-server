@@ -15,6 +15,7 @@
     <result column="status" property="status"/>
     <result column="admin" property="admin"/>
     <result column="phone" property="phone"/>
+    <result column="email" property="email"/>
     <result column="create_time" property="createTime"/>
     <result column="update_time" property="updateTime"/>
     <collection property="roles" ofType="SysRole" select="findRoles" column="id"/>
@@ -42,6 +43,66 @@
     <result column="label" property="label"/>
     <result column="code" property="code"/>
   </resultMap>
+
+  <insert id="insert" parameterType="com.ymk.health.vo.UserRolesVo">
+    insert into sys_user(username, password, nickname, sex, avatar, address, wx_openid, status, admin, phone, email)
+    VALUES (#{username}, #{password}, #{nickname}, #{sex}, #{avatar}, #{address}, #{wxOpenid}, #{status}, #{admin},
+            #{phone}, #{email});
+  </insert>
+
+  <insert id="bindUserRoles">
+    insert into user_roles
+    values (#{userId}, #{roleId});
+  </insert>
+
+  <update id="update" parameterType="com.ymk.health.vo.UserRolesVo">
+    update sys_user
+    <set>
+      <if test="username != null">
+        `username` = #{username},
+      </if>
+      <if test="password != null">
+        `password` = #{password},
+      </if>
+      <if test="nickname != null">
+        `nickname` = #{nickname},
+      </if>
+      <if test="sex != null">
+        `sex` = #{sex},
+      </if>
+      <if test="address != null">
+        `address` = #{address},
+      </if>
+      <if test="wxOpenid != null">
+        `wx_openid` = #{wxOpenid},
+      </if>
+      <if test="status != null">
+        `status` = #{status},
+      </if>
+      <if test="admin != null">
+        `admin` = #{admin},
+      </if>
+      <if test="phone != null">
+        `phone` = #{phone},
+      </if>
+      <if test="email != null">
+        `email` = #{email}
+      </if>
+    </set>
+    where `id` = #{id};
+  </update>
+
+  <delete id="delete">
+    delete
+    from sys_user
+    where id = #{id};
+  </delete>
+
+  <delete id="deleteUserRoles">
+    delete
+    from user_roles
+    where `user_id` = #{userId}
+  </delete>
 
   <select id="findAll" resultType="SysUser">
     select *
@@ -99,6 +160,23 @@
       FROM roles_menus
       WHERE role_id IN (SELECT role_id FROM user_roles WHERE user_id = #{userId}));
     </if>
+  </select>
+
+  <select id="findPage" resultType="SysUser">
+    select * from sys_user
+    <if test="queryString != null and queryString.length > 0">
+      where username like concat('%', #{queryString}, '%')
+      or nickname like concat('%', #{queryString}, '%')
+      or address like concat('%', #{queryString}, '%')
+      or phone like concat('%', #{queryString}, '%')
+      or email like concat('%', #{queryString}, '%')
+    </if>
+  </select>
+
+  <select id="findUserId" resultType="long">
+    select id
+    from sys_user
+    where `username` = #{username};
   </select>
 
 </mapper>

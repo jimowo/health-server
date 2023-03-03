@@ -26,6 +26,7 @@ public class SysUser implements UserDetails {
     private boolean status;
     private boolean admin;
     private String phone;
+    private String email;
     private Timestamp createTime;
     private Timestamp updateTime;
     private List<SysRole> roles;
