@@ -2,6 +2,7 @@ package com.ymk.health.controller;
 
 import com.ymk.health.service.SysUserService;
 import com.ymk.health.utils.QueryInfo;
+import com.ymk.health.utils.RedisUtil;
 import com.ymk.health.utils.Result;
 import com.ymk.health.utils.SecurityUtil;
 import com.ymk.health.vo.LoginVo;
@@ -25,6 +26,9 @@ public class LoginController {
 
     @Autowired
     private SysUserService sysUserService;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     @PostMapping("/login")
     @ApiOperation(value = "登录接口")
@@ -53,6 +57,7 @@ public class LoginController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             SecurityContextHolder.getContext().setAuthentication(null);
+            redisUtil.delete("userInfo_" + SecurityUtil.getUsername());
             return Result.success("退出登录成功");
         }
         return Result.fail("请先登录");

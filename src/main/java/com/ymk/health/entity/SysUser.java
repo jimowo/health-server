@@ -51,7 +51,7 @@ public class SysUser implements UserDetails {
         if (permissions != null && permissions.size() >0) {
             permissions.forEach(item -> {
                 if (StringUtil.isNotEmpty(item.getCode())) {
-                    list.add(new SimpleGrantedAuthority(("ROLE_" + item.getCode())));
+                    list.add(new SimpleGrantedAuthority(("PER_" + item.getCode())));
                 }
             });
         }

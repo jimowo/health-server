@@ -62,7 +62,7 @@ public class SysUserServiceImpl implements SysUserService {
         log.info("1. 开始登录");
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginVo.getUsername());
         log.info("2. 验证账号密码");
-        if (null == userDetails || !passwordEncoder.matches(loginVo.getPassword(), userDetails.getPassword())) {
+        if (null == userDetails || !passwordEncoder.matches(MD5Util.md5(loginVo.getPassword()), userDetails.getPassword())) {
             return Result.fail("账号或密码错误");
         }
         log.info("3. 判断账号是否启用");
@@ -85,8 +85,8 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public Result insert(UserRolesVo sysUser) {
         log.info("1. 添加用户");
-        // 编码密码
-        sysUser.setPassword(passwordEncoder.encode(sysUser.getPassword()));
+        // 编码密码 md5加密
+        sysUser.setPassword(passwordEncoder.encode(MD5Util.md5(sysUser.getPassword())));
         sysUserMapper.insert(sysUser);
         long userId = sysUserMapper.findUserId(sysUser.getUsername());
         if (sysUser.getRoles() != null && sysUser.getRoles().size() > 0) {
@@ -113,6 +113,7 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public Result update(UserRolesVo sysUser) {
         log.info("1. 更新用户信息");
+        sysUser.setPassword(passwordEncoder.encode(MD5Util.md5(sysUser.getPassword())));
         sysUserMapper.update(sysUser);
         if (sysUser.getRoles() != null && sysUser.getRoles().size() > 0) {
             log.info("2. 删除旧的绑定信息");
