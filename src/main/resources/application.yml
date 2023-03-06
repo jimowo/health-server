@@ -54,6 +54,12 @@ jwt:
   # 签名密码
   secret: ymkztt9897
   # 过期时间(s)
-  expiration: 1800
+  expiration: 18000
   # token 头部
   tokenHead: 'Bearer '
+
+# 七牛云
+qiniu:
+  accessKey: 4Sd_qnJn_Q80bBrHs2DqZjLMdWY9TzSPAFXxReV1
+  secretKey: HW_yjT1cwWGNW6acmW7QOfgsGGjcOzxy6bMPHgyp
+  bucket: ymk-health
