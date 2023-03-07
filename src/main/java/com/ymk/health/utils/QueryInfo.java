@@ -1,25 +1,19 @@
 package com.ymk.health.utils;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-/**
- * 分页的每页的信息
- */
 @Data
+@ApiModel(value = "分页信息")
 public class QueryInfo {
 
-    /**
-     * 第几页
-     */
+    @ApiModelProperty("第几页")
     private Integer pageNumber;
 
-    /**
-     * 一页多少数据
-     */
+    @ApiModelProperty("一页多少数据")
     private Integer pageSize;
 
-    /**
-     * 查询的内容
-     */
+    @ApiModelProperty("查询的内容")
     private String queryString;
 }

@@ -8,9 +8,6 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * 分页信息
- */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel(value = "分页数据")
