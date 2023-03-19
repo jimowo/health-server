@@ -4,11 +4,12 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Data
 @ApiModel(value = "前端发送的绑定角色与菜单权限的参数")
-public class RoleMenusPermissionsVo {
+public class RoleMenusPermissionsVo implements Serializable {
 
     @ApiModelProperty(value = "角色ID")
     private long id;
