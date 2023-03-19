@@ -35,6 +35,22 @@ spring:
       # 从连接池中获取连接最大等待时间（默认为-1，单位为毫秒，负数表示无限）
       max-wait: -1
 
+  #配置邮件
+  mail:
+    # smtp 主机
+    host: smtp.163.com
+    # 服务协议
+    protocol: smtp
+    # 编码集
+    default-encoding: UTF-8
+    # 允许测试链接
+    test-connection: true
+    # 设置发件人
+    username: 13905142704@163.com
+    # 授权码
+    password: QOCFBNOIBCASAHJT
+
+
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.ymk.health.entity
