@@ -6,12 +6,7 @@ import com.ymk.health.vo.MailVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Random;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/mail")
@@ -22,12 +17,25 @@ public class MailController {
     private MailUtil mailUtil;
 
     @ApiOperation(value = "忘记密码")
-    @PostMapping("/forgetPwd")
-    public Result forgetPwd(@RequestBody MailVo mail) {
-        mail.setSubject("个人健康平台");
-        // TODO: 需要提供修改密码的功能
-        Random random = new Random();
-        mail.setContent("您的新密码: " + random.nextInt() + "请妥善保管");
-        return Result.success(mailUtil.sendMail(mail));
+    @GetMapping("/forgetPwd/{mail}")
+    public Result forgetPwd(@PathVariable("mail") String mail) {
+        MailVo mailVo = new MailVo();
+        mailVo.setSubject("个人健康平台 密码重置");
+        mailVo.setReceiver(new String[]{mail});
+        mailVo.setHtml(true);
+        mailVo.setContent(
+                "<!DOCTYPE html>\n" +
+                "<html>\n" +
+                "<head>\n" +
+                "<meta charset=\"utf-8\">\n" +
+                "<title>个人运动平台</title>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "<h1>忘记密码</h1>\n" +
+                "<p>此处应有一个链接</p>\n" +
+                "</body>\n" +
+                "</html>"
+        );
+        return Result.success(mailUtil.sendMail(mailVo));
     }
 }

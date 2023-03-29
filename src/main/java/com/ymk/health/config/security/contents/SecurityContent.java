@@ -15,6 +15,8 @@ public class SecurityContent {
             "/swagger-resources/**",
             "/v2/**",
             "/configuration/ui",
-            "/configuration/security"
+            "/configuration/security",
+            // 忘记密码接口
+            "/mail/forgetPwd/**"
     };
 }
