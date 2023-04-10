@@ -58,6 +58,7 @@ public class QiniuUtil {
      */
     public String uploadQiniu(String filePath, String fileName) {
         //如果是Windows情况下，格式是 D:\\qiniu\\test.png
+        UploadManager uploadManager = getUploadManager();
         //默认不指定key的情况下，以文件内容的hash值作为文件名
         Auth auth = Auth.create(accessKey, secretKey);
         String upToken = auth.uploadToken(bucket);
