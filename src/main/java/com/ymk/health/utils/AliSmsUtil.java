@@ -15,7 +15,7 @@ import java.util.Random;
  */
 @Component
 @Slf4j
-public class AliMsgUtil {
+public class AliSmsUtil {
 
     private static String accessKey;
 
@@ -31,12 +31,12 @@ public class AliMsgUtil {
 
     @Value("${aliyun.accessKey}")
     public void setAccessKey(String accessKey) {
-        AliMsgUtil.accessKey = accessKey;
+        AliSmsUtil.accessKey = accessKey;
     }
 
     @Value("${aliyun.secretKey}")
     public void setSecretKey(String secretKey) {
-        AliMsgUtil.secretKey = secretKey;
+        AliSmsUtil.secretKey = secretKey;
     }
 
 
