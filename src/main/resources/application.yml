@@ -79,3 +79,10 @@ qiniu:
   accessKey: 4Sd_qnJn_Q80bBrHs2DqZjLMdWY9TzSPAFXxReV1
   secretKey: HW_yjT1cwWGNW6acmW7QOfgsGGjcOzxy6bMPHgyp
   bucket: ymk-health
+
+# 阿里云短信
+aliyun:
+  accessKey: test
+  secretKey: test
+  signName: YMK
+  templateCode: SMS_123456
