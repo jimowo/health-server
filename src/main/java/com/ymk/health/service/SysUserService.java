@@ -25,6 +25,13 @@ public interface SysUserService {
     SysUser findUserByUsername(String Username);
 
     /**
+     * 根据手机号获取用户信息
+     * @param phone 手机号
+     * @return 用户信息
+     */
+    Result findUserByPhone(String phone);
+
+    /**
      * 登录接口
      * @param loginVo 登录信息
      * @return 返回token

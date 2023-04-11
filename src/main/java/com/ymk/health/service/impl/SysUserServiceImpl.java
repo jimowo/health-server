@@ -58,6 +58,12 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
+    public Result findUserByPhone(String phone) {
+        log.info("根据手机号查询用户信息");
+        return Result.success("获取用户信息成功", sysUserMapper.findUserByPhone(phone));
+    }
+
+    @Override
     public Result login(LoginVo loginVo) {
         log.info("1. 开始登录");
         UserDetails userDetails = userDetailsService.loadUserByUsername(loginVo.getUsername());
