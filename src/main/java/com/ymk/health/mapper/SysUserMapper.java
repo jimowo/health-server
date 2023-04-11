@@ -25,6 +25,11 @@ public interface SysUserMapper {
     SysUser findUserByUsername(@Param("username") String Username);
 
     /**
+     * 根据手机号查询用户信息
+     */
+    SysUser findUserByPhone(@Param("phone") String phone);
+
+    /**
      * 查找用户对应的角色信息
      */
     List<SysRole> findRoles(@Param("userId") Long userId);

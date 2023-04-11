@@ -179,4 +179,10 @@
     where `username` = #{username};
   </select>
 
+  <select id="findUserByPhone" resultType="SysUser">
+    select *
+    from sys_user
+    where phone = #{phone};
+  </select>
+
 </mapper>
