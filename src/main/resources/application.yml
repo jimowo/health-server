@@ -86,3 +86,15 @@ aliyun:
   secretKey: test
   signName: YMK
   templateCode: SMS_123456
+
+# ChatGPT
+openai:
+  #密钥
+  key: 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
+  #超时时间
+  timeout: 100000
+  #模型
+  model: gpt-3.5-turbo
+  # url
+  url: https://api.openai.com/v1/chat/completions
+
